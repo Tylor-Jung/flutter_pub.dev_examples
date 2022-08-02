@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:study_package/main.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -31,6 +35,41 @@ class _HomePageState extends State<HomePage> {
               _showToast();
             },
             child: const Text('button'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final notification = FlutterLocalNotificationsPlugin();
+
+              const android = AndroidNotificationDetails(
+                '0',
+                '알림 테스트',
+                channelDescription: '알림 테스트 바디부분',
+                importance: Importance.max,
+                priority: Priority.max,
+              );
+              const ios = IOSNotificationDetails();
+              const detail = NotificationDetails(
+                android: android,
+                iOS: ios,
+              );
+
+              final permission = Platform.isAndroid
+                  ? true
+                  : await notification
+                          .resolvePlatformSpecificImplementation<
+                              IOSFlutterLocalNotificationsPlugin>()
+                          ?.requestPermissions(
+                              alert: true, badge: true, sound: true) ??
+                      false;
+              print('permission $permission');
+              if (!permission) {
+                return;
+              }
+              await flutterLocalNotificationsPlugin.show(
+                  0, 'plain title', 'plain body', detail,
+                  payload: 'item x');
+            },
+            child: const Text('add alram'),
           ),
           const Center(
             child: Text('hi'),
