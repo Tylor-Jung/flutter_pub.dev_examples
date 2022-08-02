@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
           ),
           ElevatedButton(
             onPressed: () async {
-              final notification = FlutterLocalNotificationsPlugin();
+              final notification = flutterLocalNotificationsPlugin;
 
               const android = AndroidNotificationDetails(
                 '0',
@@ -55,19 +55,22 @@ class _HomePageState extends State<HomePage> {
 
               final permission = Platform.isAndroid
                   ? true
-                  : await notification
+                  : (await notification
                           .resolvePlatformSpecificImplementation<
                               IOSFlutterLocalNotificationsPlugin>()
                           ?.requestPermissions(
-                              alert: true, badge: true, sound: true) ??
-                      false;
+                              alert: true, badge: true, sound: false) ??
+                      false);
               print('permission $permission');
               if (!permission) {
                 return;
               }
               await flutterLocalNotificationsPlugin.show(
-                  0, 'plain title', 'plain body', detail,
-                  payload: 'item x');
+                0,
+                'plain title',
+                'plain body',
+                detail,
+              );
             },
             child: const Text('add alram'),
           ),
