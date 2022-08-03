@@ -99,14 +99,11 @@ class _HomePageState extends State<HomePage> {
             },
             child: const Text('add alram'),
           ),
-          const Center(
-            child: Text('hi'),
-          ),
+          const Center(child: Text('set alram time')),
         ],
       ),
     );
   }
-
   void _showToast() {
     Widget toast = Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
